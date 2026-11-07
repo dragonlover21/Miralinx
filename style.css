@@ -56,8 +56,8 @@ header {
 
 /* Royal blue diamond */
 .nav-button {
-    width: 80px;
-    height: 155px;
+    width: 65px;
+    height: 115px;
     background-color: #2455A4;
     transform: rotate(45deg);
     display: flex;
