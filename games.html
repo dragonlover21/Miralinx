@@ -26,7 +26,327 @@
             <h2>Game 1</h2>
             <p>Our first Miralinx game!</p>
 
-            <!-- Your Scratch game will go here -->
+         
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Which first year student are you?</title>
+    <link rel="stylesheet" href="style.css">
+
+    <style>
+        .quiz {
+            max-width: 700px;
+            margin: 170px auto 50px;
+            padding: 25px;
+            text-align: center;
+            color: #B99A52;
+        }
+
+        .quiz button {
+            display: block;
+            width: 100%;
+            margin: 12px 0;
+            padding: 15px;
+            background: #571C45;
+            color: #B99A52;
+            border: 2px solid #B99A52;
+            border-radius: 10px;
+            font-size: 17px;
+            cursor: pointer;
+        }
+
+        .quiz button:hover {
+            background: #75305D;
+        }
+
+        #result {
+            display: none;
+        }
+
+        #progress {
+            margin-bottom: 20px;
+        }
+    </style>
+</head>
+
+<body>
+
+<div class="quiz">
+
+    <h1>So, are you a noble telepath or a simply genius elf?</h1>
+    <p>Answer 10 questions to discover your first year kin, and yes, this includes Flaming (if you know, you know)</p>
+
+    <div id="quizArea">
+        <h2 id="question"></h2>
+        <p id="progress"></p>
+        <div id="answers"></div>
+    </div>
+
+    <div id="result">
+        <h2>Your Miralinx character is...</h2>
+        <h1 id="characterName"></h1>
+        <p id="characterDescription"></p>
+        <button onclick="restartQuiz()">Try Again</button>
+    </div>
+
+</div>
+
+<script>
+
+// =================================
+// 25 CHARACTER RESULTS
+// Replace these examples with yours!
+// =================================
+
+const characters = [
+    {name: "Moonlight Eclipse", description: "Your the main attraction, lights camera a-action...(cough cough), anyways, congrats, you got Moony Loony.So that means you're quite an unforgettable person!Whether that's in a good or bad way is up to you my chaotic good friend."},
+    {name: "Katsuha Daikaze", description: "Smart and polished but I bet you got a few secrets people would die to hear.There's a reason you've become like this, and it's only a matter of time when others know why too."},
+    {name: "Character 3", description: "Description goes here."},
+    {name: "Character 4", description: "Description goes here."},
+    {name: "Character 5", description: "Description goes here."},
+    {name: "Character 6", description: "Description goes here."},
+    {name: "Character 7", description: "Description goes here."},
+    {name: "Character 8", description: "Description goes here."},
+    {name: "Character 9", description: "Description goes here."},
+    {name: "Character 10", description: "Description goes here."},
+    {name: "Character 11", description: "Description goes here."},
+    {name: "Character 12", description: "Description goes here."},
+    {name: "Character 13", description: "Description goes here."},
+    {name: "Character 14", description: "Description goes here."},
+    {name: "Character 15", description: "Description goes here."},
+    {name: "Character 16", description: "Description goes here."},
+    {name: "Character 17", description: "Description goes here."},
+    {name: "Character 18", description: "Description goes here."},
+    {name: "Character 19", description: "Description goes here."},
+    {name: "Character 20", description: "Description goes here."},
+    {name: "Character 21", description: "Description goes here."},
+    {name: "Character 22", description: "Description goes here."},
+    {name: "Character 23", description: "Description goes here."},
+    {name: "Character 24", description: "Description goes here."},
+    {name: "Character 25", description: "Description goes here."}
+];
+
+// =================================
+// QUESTIONS
+// Each answer awards points to characters.
+// =================================
+
+const questions = [
+    {
+        question: "What's your favourate colour(or which colour is it similar to)?",
+        answers: [
+            {text: "red", scores: []},
+            {text: "orange", scores: []},
+            {text: "yellow", scores: []},
+            {text: "green", scores: []}
+            {text: "blue", scores: [0, ]} 
+            {text: "purple", scores: []} 
+            {text: "pink", scores: [0, ]} 
+            {text: "black", scores: [1]}
+            {text: "white", scores: []}
+             {text: "brown/beige", scores: []}
+        ]
+    },
+    {
+        question: "How would people describe you (not how you describe you,even if other's opinions are false)?",
+        answers: [
+            {text: "the shy and scared kid", scores: []},
+            {text: "the 'popular' or 'mean' one", scores: []},
+            {text: "hot-tempered drama queen", scores: []},
+            {text: "focused and studious", scores: [1]}
+            {text: "whimsical and friendly", scores: []}
+            {text: "ambitious and maybe a bit manipulative", scores: []}
+            {text: "trouble magnet", scores: [0]}
+            {text: "whines and is pretty attention seeking", scores: [0]}
+            {text: "theater kid/strange hobbied child", scores: [0]}
+            {text: "very average dude", scores: []}
+            {text: "hootie fruity", scores: [1]}
+            {text: "weird kid/loner", scores: []}
+        ]
+    },
+    {
+        question: "What animal are you most like?",
+        answers: [
+            {text: "A wolf.Awoooooo", scores: []},
+            {text: "A quiet but prominent moth", scores: [1]},
+            {text: "big colourful butterfly princess", scores: []},
+            {text: "a misunderstood scorpion", scores: []}
+            {text: "a batty bat", scores: []}
+            {text: "an alert lizard", scores: []}
+            {text: "sly fox", scores: []}
+            {text: "proud bird or lion", scores: []}
+            {text: "clumsy but venemous when provoked snake", scores: [0]}
+        ]
+    },
+    {
+        question: "What's your MAIN life goal?",
+        answers: [
+            {text: "to help and take care of others", scores: []},
+            {text: "to explore and have fun", scores: []},
+            {text: "to acheive my goals with any means necessary", scores: [0]},
+            {text: "a life of happiness regardless of wealth", scores: []}
+            {text: "a life of wealth no matter the job or conditions", scores: []}
+            {text: "fame and influence", scores: []}
+            {text: "do what my heart wants me to do no matter the difficulties and setbacks", scores: []}
+            {text: "I JUST WANT TO MAKE IT TO TUESDAY!!!", scores: []}
+            {text: "To prove them all wrong", scores: [1]}
+        ]
+    },
+    {
+        question: "Which activity sounds best?",
+        answers: [
+            {text: "Drawing,writing or designing", scores: [0]},
+            {text: "Exploring and learning new things", scores: []},
+            {text: "Solving puzzles and magic tricks", scores: [1]},
+            {text: "Spending time with friends/socialising", scores: []}
+            {text: "books and tv", scores: []}
+            {text: "coding and gaming", scores: []}
+            {text: "music", scores: []}
+            {text: "physical sports/activities", scores: []}
+            {text: "makeup/dress up/cosplay", scores: []}
+            {text: "gossip", scores: []}
+            {text: "studying", scores: []}
+            {text: "baking", scores: []}
+            {text: "gardening", scores: []}
+        ]
+    },
+    {
+        question: "What's your aestetic?",
+        answers: [
+            {text: "traditional(think cultural)", scores: []},
+            {text: "minimalist(simple and clean)", scores: []},
+            {text: "dark academia/regency(formal and mysterious)", scores: [1]},
+            {text: "cottagecore(soft florals)", scores: []}
+            {text: "casual/comfy", scores: []}
+            {text: "light academia", scores: []}
+             {text: "decora/scene/gyaru", scores: []}
+             {text: "grungecore", scores: [0]}
+        ]
+    },
+    {
+        question: "What do you resonate with?",
+        answers: [
+            {text: "great winds and storms", scores: [1]},
+            {text: "calm waters", scores: []},
+            {text: "blazing fire", scores: []},
+            {text: "solar flare", scores: []}
+            {text: "dark smokey abyss", scores: []}
+            {text: "quiet night", scores: [0]}
+            {text: "frozen iceland", scores: []}
+            {text: "mother nature", scores: []}
+        ]
+    },
+    {
+        question: "What is your worst quality?",
+        answers: [
+            {text: "easily jealous", scores: []},
+            {text: "overthinker", scores: [0]},
+            {text: "pokerface", scores: [1]},
+            {text: "too talkative", scores: []}
+        ]
+    },
+    {
+        question: "What kind of character do you think you'd be?",
+        answers: [
+            {text: "one of the main characters", scores: [0]},
+            {text: "the villian/antihero", scores: []},
+            {text: "just a sidecharacter", scores: [},
+            {text: "traumatized therapist", scores: []}
+            {text: "doomed platonic/romantic interest", scores: [1]}
+            {text: "the sacrafice", scores: []}
+            {text: "main love interest", scores: []}
+        ]
+    },
+    {
+        question: "What song lyrics are you?",
+        answers: [
+            {text: "'victory's your only payment' and 'fake it till you make it'", scores: [1]},
+            {text: "'One track mind, one track heart, if I fail, I'll fall apart'", scores: [0]},
+            {text: "'make me your radio, tuen me up when you feel low'", scores: [2, 6, 10, 14, 18, 22]},
+            {text: "'those cheerleaders and jocks would be six feet under'", scores: [3, 7, 11, 15, 19, 23, 24]}
+        
+        ]
+    }
+];
+
+// =================================
+// QUIZ ENGINE
+// =================================
+
+let currentQuestion = 0;
+let scores = Array(25).fill(0);
+
+function showQuestion() {
+    const q = questions[currentQuestion];
+
+    document.getElementById("question").textContent = q.question;
+    document.getElementById("progress").textContent =
+        "Question " + (currentQuestion + 1) + " of 10";
+
+    const answerArea = document.getElementById("answers");
+    answerArea.innerHTML = "";
+
+    q.answers.forEach(answer => {
+        const button = document.createElement("button");
+        button.textContent = answer.text;
+
+        button.onclick = function() {
+            answer.scores.forEach(index => {
+                scores[index]++;
+            });
+
+            currentQuestion++;
+
+            if (currentQuestion < questions.length) {
+                showQuestion();
+            } else {
+                showResult();
+            }
+        };
+
+        answerArea.appendChild(button);
+    });
+}
+
+function showResult() {
+    document.getElementById("quizArea").style.display = "none";
+    document.getElementById("result").style.display = "block";
+
+    const highestScore = Math.max(...scores);
+    const winners = characters.filter((character, index) =>
+        scores[index] === highestScore
+    );
+
+    const winner = winners[
+        Math.floor(Math.random() * winners.length)
+    ];
+
+    document.getElementById("characterName").textContent =
+        winner.name;
+
+    document.getElementById("characterDescription").textContent =
+        winner.description;
+}
+
+function restartQuiz() {
+    currentQuestion = 0;
+    scores = Array(25).fill(0);
+
+    document.getElementById("quizArea").style.display = "block";
+    document.getElementById("result").style.display = "none";
+
+    showQuestion();
+}
+
+showQuestion();
+
+</script>
+
+</body>
+</html>
+
 
         </section>
 
